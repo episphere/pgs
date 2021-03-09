@@ -45,6 +45,8 @@ pgs.loadPako=function(){
     })      
 }
 
+pgs.parse=()=>{}
+
 if(typeof(define)!="undefined"){
     //define(pgs)
     define(['https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js'],function(pako){
