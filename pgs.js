@@ -22,7 +22,7 @@ pgs.textArea = async (entry='PGS000004')=>{
     ta.style.height = '20em';
     ta.style.color = 'lime';
     ta.style.backgroundColor = 'black';
-  return ta;
+    return ta;
 }
 
 
