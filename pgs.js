@@ -25,6 +25,17 @@ pgs.textArea = async (entry='PGS000004')=>{
     return ta;
 }
 
+//pgs.url='https://www.pgscatalog.org/rest/'
+pgs.url='https://script.google.com/macros/s/AKfycbw1lC7UPcj34J06v_HWACyFJAPSoDB7VMI-KWbpb0mfuh9wccHPPFdbMdxGlUeyqDFM/exec?'
+
+pgs.get=async(q='score/PGS000004?format=json')=>{
+    const url = pgs.url+encodeURIComponent(q)
+    return await (await fetch(url)).json()
+}
+
+pgs.score={}
+//pgs.score.all=async fetch(url='https://www.pgscatalog.org/rest/score/all')
+
 
 pgs.loadPako=function(){
     pgs.loadScript("https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js").then(s=>{
