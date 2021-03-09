@@ -3,3 +3,23 @@
 
 <link rel="stylesheet" href="pgs.css">
 <script src="pgs.js"></script>
+
+<input id="inputID" value="PGS000004"> <button id="retrieveButton">retrieve</button>
+<br><textarea id="entryTextArea" style="width:100%;color:lime;background-color:black;height:20em"></textarea>
+<script>
+    (()=>{ // anonymous function
+        
+        retrieveButton.onclick=async()=>{
+            entryTextArea.value = (await pgs.textArea(inputID.value)).value
+        }
+
+        inputID.onkeyup=async(ev)=>{
+            if(ev.keyCode==13){
+                retrieveButton.click()
+            }
+        }
+
+        setTimeout(()=>{retrieveButton.click()},1000)
+        
+    })()
+</script>
