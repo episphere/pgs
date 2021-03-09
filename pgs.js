@@ -8,6 +8,12 @@ pgs.loadScript=async(url)=>{
     return document.head.appendChild(s)
 }
 
+pgs.loadScore=async(entry='PGS000004')=>{
+    const url = `https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`
+    //return await (await fetch(url)).arrayBuffer()
+    return pgs.pako.inflate(await (await fetch(url)).arrayBuffer(),{to:'string'})
+}
+
 
 pgs.loadPako=function(){
     pgs.loadScript("https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js").then(s=>{
