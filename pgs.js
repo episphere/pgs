@@ -45,7 +45,42 @@ pgs.loadPako=function(){
     })      
 }
 
-pgs.parse=()=>{}
+pgs.deblank=(txt)=>{
+    return txt.replace(/^[#\s]+/,'').replace(/\s+?/,'')
+}
+
+pgs.parse=async(txt)=>{
+    if(!txt){ // sample score file
+        txt=await pgs.loadScore('PGS000004')
+    }
+    if(txt.length<100){
+        txt=await pgs.loadScore(txt)
+    }
+    let arr = txt.split(/\n/).filter(x=>x.length>0) // remove empty rows
+    let y={info:pgs.deblank(arr[0])}
+    let parm=''
+    for(var i = 1;i<arr.length;i++){
+        if(arr[i][0]=='#'){
+            if(arr[i][1]=='#'){
+                parm=pgs.deblank(arr[i])
+                y[parm]={}
+            }else{
+                let av = pgs.deblank(arr[i]).split('=').map(pgs.deblank)
+                y[parm][av[0]]=av[1]
+            }
+
+            //console.log(i,arr[i])
+        }
+        else{
+            //console.log(i)
+            break
+        }
+    }
+    console.log(i,arr[i])
+    y.fields = arr[i].split(/\t/g) // list
+    y.values = arr.slice(i+1).map(x=>x.split(/\t/g).map(xi=>parseFloat(xi)?parseFloat(xi):xi))
+    return y
+}
 
 if(typeof(define)!="undefined"){
     //define(pgs)
