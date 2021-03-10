@@ -28,9 +28,17 @@ pgs.textArea = async (entry='PGS000004')=>{
 //pgs.url='https://www.pgscatalog.org/rest/'
 pgs.url='https://script.google.com/macros/s/AKfycbw1lC7UPcj34J06v_HWACyFJAPSoDB7VMI-KWbpb0mfuh9wccHPPFdbMdxGlUeyqDFM/exec?'
 
-pgs.get=async(q='score/PGS000004?format=json')=>{
+pgs.get=async(q='score/PGS000004?format=json')=>{ // PGS API call
     const url = pgs.url+encodeURIComponent(q)
     return await (await fetch(url)).json()
+}
+
+pgs.getAttr=async(id='PGS000004')=>{ // getting attributes of a PSG entry
+    return await pgs.get(`score/${id}?format=json`)
+}
+
+pgs.getValues=async(id='PGS000004')=>{ // getting values of a PSG entry by parsing the PSG file
+    return await pgs.parse(id)
 }
 
 pgs.score={}
