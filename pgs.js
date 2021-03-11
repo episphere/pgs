@@ -50,7 +50,13 @@ pgs.loadPako=function(){
         s.onload=function(){
             pgs.pako=pako
         }
-    })      
+    })
+    pgs.loadScript("https://cdnjs.cloudflare.com/ajax/libs/localforage/1.9.0/localforage.min.js").then(s=>{
+        s.onload=function(){
+            pgs.localforage=localforage
+        }
+    })
+    // https://cdnjs.cloudflare.com/ajax/libs/localforage/1.9.0/localforage.min.js  
 }
 
 pgs.deblank=(txt)=>{
@@ -90,10 +96,15 @@ pgs.parse=async(txt)=>{
     return y
 }
 
+pgs.dtFrame2Array=(fields,values)=>{
+    // under development
+}
+
 if(typeof(define)!="undefined"){
     //define(pgs)
-    define(['https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js'],function(pako){
+    define(['https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js','https://cdnjs.cloudflare.com/ajax/libs/localforage/1.9.0/localforage.min.js'],function(pako,localforage){
         pgs.pako = pako
+        pgs.localforage=localforage
         return pgs
     })
 }else{
