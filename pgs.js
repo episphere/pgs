@@ -65,7 +65,7 @@ pgs.score={}
 //pgs.score.all=async fetch(url='https://www.pgscatalog.org/rest/score/all')
 
 
-pgs.loadPako=function(){
+pgs.loadDependencies=function(){
     pgs.loadScript("https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js").then(s=>{
         s.onload=function(){
             pgs.pako=pako
@@ -137,6 +137,21 @@ pgs.dtFrame2Array=(fields,values)=>{
     // under development
 }
 
+pgs.ini=()=>{ // act on context, such as search parameters. Not called automatically here.
+    pgs.parms={}
+    if(location.search.length>5){
+        location.search.slice(1).split('&').map(x=>{aa=x.split('=');pgs.parms[aa[0]]=aa[1]})
+    }
+    if(pgs.parms.id){
+        let el = document.getElementById('inputID')
+        let bt = document.getElementById('retrieveButton')
+        if(el&&bt){
+            el.value=pgs.parms.id
+            bt.click()
+        }
+    }
+}
+
 if(typeof(define)!="undefined"){
     //define(pgs)
     define(['https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js','https://cdnjs.cloudflare.com/ajax/libs/localforage/1.9.0/localforage.min.js'],function(pako,localforage){
@@ -145,6 +160,6 @@ if(typeof(define)!="undefined"){
         return pgs
     })
 }else{
-    pgs.loadPako()
+    pgs.loadDependencies()
 }
 
