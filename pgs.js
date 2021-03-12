@@ -10,7 +10,18 @@ pgs.loadScript=async(url)=>{
 
 pgs.loadScore=async(entry='PGS000004')=>{
     const url = `https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`
-    //return await (await fetch(url)).arrayBuffer()
+    /*
+    let y
+    if(pgs.localforage){
+        y = pgs.localforage.getItem(url)
+    }
+    if(!y){
+        let ab = await (await fetch(url)).arrayBuffer()
+        y = pgs.pako.inflate(ab,{to:'string'})
+        pgs.localforage.setItem(url,y)
+    }
+    return y
+    */
     return pgs.pako.inflate(await (await fetch(url)).arrayBuffer(),{to:'string'})
 }
 
@@ -107,6 +118,19 @@ pgs.parse=async(txt)=>{
 
 pgs.info = async(id='PGS000004')=>{
     return await pgs.get(`score/${id}?format=json`)
+}
+pgs.getRsid = async(x = 'chr1:g.100880328A>T?fields=dbsnp.rsid')=>{
+    let url = 'https://myvariant.info/v1/variant/'
+    if(typeof(x)=='string'){
+        url+=decodeURIComponent(x)
+    }else{ // something like [1,100880328,"T","A"]
+        url+=`chr${x[0]}:g.${x[1]}${x[3]}>${x[2]}?fields=dbsnp.rsid`
+    }
+    //return (await fetch(url)).json()
+    let y = await (await fetch(url)).json()
+    return y.dbsnp.rsid
+    // chr1:g.100880328A>T?fields=dbsnp.rsid
+    //https://myvariant.info/v1/variant/
 }
 
 pgs.dtFrame2Array=(fields,values)=>{
