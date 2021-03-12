@@ -96,6 +96,10 @@ pgs.parse=async(txt)=>{
     return y
 }
 
+pgs.info = async(id='PGS000004')=>{
+    return pgs.get(`score/${id}?format=json`)
+}
+
 pgs.dtFrame2Array=(fields,values)=>{
     // under development
 }
