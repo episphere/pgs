@@ -146,7 +146,7 @@ pgs.ini=()=>{ // act on context, such as search parameters. Not called automatic
         let el = document.getElementById('inputID')
         let bt = document.getElementById('retrieveButton')
         if(el&&bt){
-            el.value=pgs.parms.id
+            el.value="PGS000000".slice(0,-pgs.parms.id.length)+pgs.parms.id
             bt.click()
         }
     }
