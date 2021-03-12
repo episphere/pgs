@@ -30,7 +30,16 @@ pgs.url='https://script.google.com/macros/s/AKfycbw1lC7UPcj34J06v_HWACyFJAPSoDB7
 
 pgs.get=async(q='score/PGS000004?format=json')=>{ // PGS API call
     const url = pgs.url+encodeURIComponent(q)
-    return await (await fetch(url)).json()
+    //return (await fetch(url)).json()
+    let y
+    if(pgs.localforage){
+        y = await pgs.localforage.getItem(url)
+    }
+    if(!y){
+        y = await (await fetch(url)).json()
+        pgs.localforage.setItem(url,y)
+    }
+    return y
 }
 
 pgs.getAttr=async(id='PGS000004')=>{ // getting attributes of a PSG entry
@@ -97,7 +106,7 @@ pgs.parse=async(txt)=>{
 }
 
 pgs.info = async(id='PGS000004')=>{
-    return pgs.get(`score/${id}?format=json`)
+    return await pgs.get(`score/${id}?format=json`)
 }
 
 pgs.dtFrame2Array=(fields,values)=>{
