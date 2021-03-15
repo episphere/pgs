@@ -139,7 +139,7 @@ pgs.dtFrame2Array=(fields,values)=>{
 
 pgs.ini=()=>{ // act on context, such as search parameters. Not called automatically here.
     pgs.parms={}
-    if(location.search.length>5){
+    if(location.search.length>3){
         location.search.slice(1).split('&').map(x=>{aa=x.split('=');pgs.parms[aa[0]]=aa[1]})
     }
     if(pgs.parms.id){
