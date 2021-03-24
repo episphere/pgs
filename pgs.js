@@ -26,13 +26,15 @@ pgs.loadScore=async(entry='PGS000004')=>{
 }
 
 pgs.textArea = async (entry='PGS000004')=>{
-    let txt = await pgs.loadScore(entry);
     let ta = document.createElement('textarea'); //DOM.element('textarea');
-    ta.value = txt;
-    ta.style.width = '100%';
-    ta.style.height = '20em';
-    ta.style.color = 'lime';
-    ta.style.backgroundColor = 'black';
+    ta.value = 'loading, please wait ...'
+    ta.style="width:100%;color:lime;background-color:black;height:20em;font-size:small"
+    pgs.loadScore(entry).then(txt=>{
+        if(txt.length>20000){
+            txt=txt.slice(0,20000)+'...'
+        }
+        ta.value=txt
+    })
     return ta;
 }
 
