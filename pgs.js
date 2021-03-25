@@ -47,9 +47,17 @@ pgs.textArea = async (entry='PGS000004',range=20000)=>{
     let ta = document.createElement('textarea'); //DOM.element('textarea');
     ta.value = 'loading, please wait ...'
     ta.style="width:100%;color:lime;background-color:black;height:20em;font-size:small"
+    // find file size
+    if(typeof(entry)=='number'){
+        entry = entry.toString()
+        entry = "PGS000000".slice(0,-entry.length)+entry
+    }
+    let response = await fetch(`https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`,{method:'HEAD'})
+    let fz = response.headers.get('Content-Length')
     pgs.loadScore(entry,range).then(txt=>{
         if(txt.length>range){
-            txt = txt.replace(/\n[^\n]*$/,'\n...')
+            // find file size
+            txt = txt.replace(/\n[^\n]*$/,`\n... (total size ${fz})`)
         }
         ta.value=txt
     })
