@@ -43,13 +43,13 @@ pgs.getArrayBuffer=async(range=[0,1000],url='https://ftp.ncbi.nih.gov/snp/organi
     }))).arrayBuffer()
 }
 
-pgs.textArea = async (entry='PGS000004')=>{
+pgs.textArea = async (entry='PGS000004',range=20000)=>{
     let ta = document.createElement('textarea'); //DOM.element('textarea');
     ta.value = 'loading, please wait ...'
     ta.style="width:100%;color:lime;background-color:black;height:20em;font-size:small"
-    pgs.loadScore(entry).then(txt=>{
-        if(txt.length>20000){
-            txt=txt.slice(0,20000)+'...'
+    pgs.loadScore(entry,range).then(txt=>{
+        if(txt.length>range){
+            txt = txt.replace(/\n[^\n]*$/,'\n...')
         }
         ta.value=txt
     })
