@@ -8,21 +8,39 @@ pgs.loadScript=async(url)=>{
     return document.head.appendChild(s)
 }
 
-pgs.loadScore=async(entry='PGS000004')=>{
+pgs.loadScore=async(entry='PGS000004',range)=>{
+    let txt = ""
+    if(typeof(entry)=='number'){
+        entry = entry.toString()
+        entry = "PGS000000".slice(0,-entry.length)+entry
+    }
+    console.log(entry)
     const url = `https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`
-    /*
-    let y
-    if(pgs.localforage){
-        y = pgs.localforage.getItem(url)
+    if(range){
+        if(typeof(range)=='number'){
+            range=[0,range]
+        }
+        //debugger
+        txt= pgs.pako.inflate(await (await fetch(url,{
+            headers:{
+                'content-type': 'multipart/byteranges',
+                'range': `bytes=${range.join('-')}`,
+            }
+        })).arrayBuffer(),{to:'string'})
+        //debugger
+    }else{
+        txt = pgs.pako.inflate(await (await fetch(url)).arrayBuffer(),{to:'string'})
     }
-    if(!y){
-        let ab = await (await fetch(url)).arrayBuffer()
-        y = pgs.pako.inflate(ab,{to:'string'})
-        pgs.localforage.setItem(url,y)
-    }
-    return y
-    */
-    return pgs.pako.inflate(await (await fetch(url)).arrayBuffer(),{to:'string'})
+    return txt
+}
+
+pgs.getArrayBuffer=async(range=[0,1000],url='https://ftp.ncbi.nih.gov/snp/organisms/human_9606/VCF/00-All.vcf.gz')=>{
+    return await (await (fetch(url,{
+        headers: {
+                'content-type': 'multipart/byteranges',
+                'range': `bytes=${range.join('-')}`,
+            }
+    }))).arrayBuffer()
 }
 
 pgs.textArea = async (entry='PGS000004')=>{
@@ -68,7 +86,7 @@ pgs.score={}
 
 
 pgs.loadDependencies=function(){
-    pgs.loadScript("https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js").then(s=>{
+    pgs.loadScript("https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js").then(s=>{
         s.onload=function(){
             pgs.pako=pako
         }
