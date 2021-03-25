@@ -14,7 +14,7 @@ pgs.loadScore=async(entry='PGS000004',range)=>{
         entry = entry.toString()
         entry = "PGS000000".slice(0,-entry.length)+entry
     }
-    console.log(entry)
+    //console.log(entry)
     const url = `https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`
     if(range){
         if(typeof(range)=='number'){
@@ -138,7 +138,7 @@ pgs.parse=async(txt)=>{
             break
         }
     }
-    console.log(i,arr[i])
+    //console.log(i,arr[i])
     y.fields = arr[i].split(/\t/g) // list
     y.values = arr.slice(i+1).map(x=>x.split(/\t/g).map(xi=>parseFloat(xi)?parseFloat(xi):xi))
     return y
