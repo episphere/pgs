@@ -8,14 +8,15 @@ pgs.loadScript=async(url)=>{
     return document.head.appendChild(s)
 }
 
-pgs.loadScore=async(entry='PGS000004',range)=>{
+pgs.loadScore=async(entry='PGS000004',build=37,range)=>{
     let txt = ""
     if(typeof(entry)=='number'){
         entry = entry.toString()
         entry = "PGS000000".slice(0,-entry.length)+entry
     }
     //console.log(entry)
-    const url = `https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`
+    // https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/PGS000004/ScoringFiles/Harmonized/PGS000004_hmPOS_GRCh37.txt.gz
+    const url = `https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/Harmonized/${entry}_hmPOS_GRCh${build}.txt.gz`
     if(range){
         if(typeof(range)=='number'){
             range=[0,range]
@@ -43,7 +44,7 @@ pgs.getArrayBuffer=async(range=[0,1000],url='https://ftp.ncbi.nih.gov/snp/organi
     }))).arrayBuffer()
 }
 
-pgs.textArea = async (entry='PGS000004',range=20000)=>{
+pgs.textArea = async (entry='PGS000004',build=37,range=20000)=>{
     let ta = document.createElement('textarea'); //DOM.element('textarea');
     ta.value = 'loading, please wait ...'
     ta.style="width:100%;color:lime;background-color:black;height:20em;font-size:small"
@@ -52,9 +53,9 @@ pgs.textArea = async (entry='PGS000004',range=20000)=>{
         entry = entry.toString()
         entry = "PGS000000".slice(0,-entry.length)+entry
     }
-    let response = await fetch(`https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/${entry}.txt.gz`,{method:'HEAD'})
+    let response = await fetch(`https://ftp.ebi.ac.uk/pub/databases/spot/pgs/scores/${entry}/ScoringFiles/Harmonized/${entry}_hmPOS_GRCh${build}.txt.gz`,{method:'HEAD'})
     let fz = response.headers.get('Content-Length')
-    pgs.loadScore(entry,range).then(txt=>{
+    pgs.loadScore(entry,build,range).then(txt=>{
         if(txt.length>range){
             // find file size
             txt = txt.replace(/\n[^\n]*$/,`\n... (total size ${fz})`)
