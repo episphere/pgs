@@ -7,13 +7,14 @@
 <div class="container" id="pgsDiv">
 <h1>PGS Catalog Builds  <span style="font-size:large"><br>[<a href="https://github.com/episphere/pgs" target="_blank">code</a>][<a href="https://observablehq.com/@episphere/pgs" target="_blank">notebook</a>][<a href="https://gitter.im/episphere/PRS">gitter</a>]</span></h1>
 <hr>
-<p> Inspection of genome builds GRCh37 and GRCh38 for individual polygenic risk score catalog entries at <a href="https://www.pgscatalog.org" target="_blank">pgscatalog.org</a>. For a a quick reference for the API see <a href="https://github.com/ramiromagno/cheatsheets/raw/master/quincunx/quincunx_cheatsheet.pdf" target="_blank">here</a>. For the API's full reference see the <a href="https://www.pgscatalog.org/rest/" target="_blank">SWAGER documentation</a>. Note that this application runs entirely in the browser, with no need for code (say R or Python) running on on the desktop or on server side. Your data stays private since since the analysis doesn't leave the browser. This pplication can be directed to specific PGS entries, by parameterizing the URL. Try, for example <a href="https://episphere.github.io/pgs/?id=5">episphere.github.io/pgs?id=5</a>.</p>
+<p> Inspecting genome builds GRCh37 and GRCh38 for individual polygenic risk score catalog entries at <a href="https://www.pgscatalog.org" target="_blank">pgscatalog.org</a>. For a a quick reference for the API see <a href="https://github.com/ramiromagno/cheatsheets/raw/master/quincunx/quincunx_cheatsheet.pdf" target="_blank">here</a>. For the API's full reference see the <a href="https://www.pgscatalog.org/rest/" target="_blank">SWAGER documentation</a>. Note that this application runs entirely in the browser, with no need for code (say R or Python) running on on the desktop or on server side. Your data stays private since since the analysis doesn't leave the browser. This pplication can be directed to specific PGS entries, by parameterizing the URL. Try, for example <a href="https://episphere.github.io/pgs/?id=5">episphere.github.io/pgs?id=5</a>.</p>
 <hr>
 <link rel="stylesheet" href="pgs.css">
 <script src="pgs.js"></script>
 
 <input id="inputID" value="PGS000004"> Genome build <input id=build37 type="radio" name="Gbuild" value=37 checked=true> 37 <input id=build38 type="radio" name="Gbuild" value=38> 38 <button id="retrieveButton">retrieve</button> <a href="" id="ftp" target="_blank"> FTP</a>
-<br><textarea id="entryTextArea" style="width:100%;color:lime;background-color:black;height:20em;font-size:small"></textarea>
+<br><span style="font-size:x-small">look for metadata "HmPOS_build" to confirm genome build used</span>
+<textarea id="entryTextArea" style="width:100%;color:lime;background-color:black;height:40em;font-size:small"></textarea>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </body>
@@ -24,6 +25,7 @@
         retrieveButton.onclick=async()=>{
             build=[...document.getElementsByName('Gbuild')].filter(ip=>ip.checked)[0].value
             let ta = await pgs.textArea(inputID.value,build)
+            ta.style.height='40em'
             pgsDiv.appendChild(ta)
             entryTextArea.remove()
             ta.id="entryTextArea"
